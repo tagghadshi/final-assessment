@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +31,9 @@ public class Questions {
 	private String question;
 	
 	private int votes;
-	
-	@JsonIgnore
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
+	@JsonIgnoreProperties("question")
 	private User user;
 }
