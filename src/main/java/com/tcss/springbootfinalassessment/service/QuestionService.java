@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tcss.springbootfinalassessment.entity.Questions;
+import com.tcss.springbootfinalassessment.exception.NotValidQuestion;
 import com.tcss.springbootfinalassessment.exception.QuestionNotFoundException;
 import com.tcss.springbootfinalassessment.repository.IQuestionsRepository;
 
@@ -48,6 +49,14 @@ public class QuestionService implements IQuestionsService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void updateQuestion(long id, Questions question) {
+		Optional<Questions> findById = questionRepository.findById(id);
+		if (!findById.isPresent()) {
+			throw new QuestionNotFoundException("Question does not exist");
+		}
+		Questions ques = findById.get();
+		if(ques.getQuestion() == null) {
+			throw new NotValidQuestion("Question is not valid");
+		}
 		questionRepository.save(question);
 	}
 
