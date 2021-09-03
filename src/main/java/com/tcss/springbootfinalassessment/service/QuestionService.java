@@ -10,10 +10,9 @@ import com.tcss.springbootfinalassessment.entity.Questions;
 import com.tcss.springbootfinalassessment.exception.QuestionNotFoundException;
 import com.tcss.springbootfinalassessment.repository.IQuestionsRepository;
 
-
 @Service
-public class QuestionService implements IQuestionsService{
-	
+public class QuestionService implements IQuestionsService {
+
 	@Autowired
 	IQuestionsRepository questionRepository;
 
@@ -31,7 +30,7 @@ public class QuestionService implements IQuestionsService{
 	@Override
 	public Optional<Questions> retreiveQuestion(long id) {
 		Optional<Questions> findById = questionRepository.findById(id);
-		if(!findById.isPresent()) {
+		if (!findById.isPresent()) {
 			throw new QuestionNotFoundException("Question does not exist");
 		}
 		return findById;
@@ -40,7 +39,7 @@ public class QuestionService implements IQuestionsService{
 	@Override
 	public void deleteQuestion(long id) {
 		Optional<Questions> findById = questionRepository.findById(id);
-		if(!findById.isPresent()) {
+		if (!findById.isPresent()) {
 			throw new QuestionNotFoundException("Question does not exist");
 		}
 		questionRepository.deleteById(id);
@@ -52,5 +51,4 @@ public class QuestionService implements IQuestionsService{
 		questionRepository.save(question);
 	}
 
-	
 }
