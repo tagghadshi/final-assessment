@@ -8,4 +8,6 @@ public interface IQuestionsService {
 	void saveQuestion(Questions question);
 	Iterable<Questions> retrieveAllQuestion();
 	Optional<Questions> retreiveQuestion(long id);
+	void deleteQuestion(long id);
+	void updateQuestion(long id,Questions question);
 }

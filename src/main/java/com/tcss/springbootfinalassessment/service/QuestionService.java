@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tcss.springbootfinalassessment.entity.Questions;
+import com.tcss.springbootfinalassessment.exception.QuestionNotFoundException;
 import com.tcss.springbootfinalassessment.repository.IQuestionsRepository;
 
 
@@ -16,6 +18,7 @@ public class QuestionService implements IQuestionsService{
 	IQuestionsRepository questionRepository;
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void saveQuestion(Questions question) {
 		questionRepository.save(question);
 	}
@@ -27,7 +30,26 @@ public class QuestionService implements IQuestionsService{
 
 	@Override
 	public Optional<Questions> retreiveQuestion(long id) {
-		return questionRepository.findById(id);
+		Optional<Questions> findById = questionRepository.findById(id);
+		if(!findById.isPresent()) {
+			throw new QuestionNotFoundException("Question does not exist");
+		}
+		return findById;
+	}
+
+	@Override
+	public void deleteQuestion(long id) {
+		Optional<Questions> findById = questionRepository.findById(id);
+		if(!findById.isPresent()) {
+			throw new QuestionNotFoundException("Question does not exist");
+		}
+		questionRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateQuestion(long id, Questions question) {
+		questionRepository.save(question);
 	}
 
 	
